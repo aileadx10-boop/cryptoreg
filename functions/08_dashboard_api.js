@@ -1,7 +1,6 @@
-const orchestrator = require("./01_orchestrator");
+const orchestrator = require("./orchestrator");
 
 exports.handler = async function (event) {
-
   try {
     const data = JSON.parse(event.body);
 
