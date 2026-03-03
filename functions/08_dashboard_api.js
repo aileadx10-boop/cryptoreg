@@ -1,11 +1,17 @@
-exports.handler = async function (event, context) {
+exports.handler = async function (event) {
+
   try {
+    const data = JSON.parse(event.body);
+
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Dashboard API working"
+        receivedToken: data.tokenName,
+        receivedWebsite: data.website,
+        status: "Input received successfully"
       })
     };
+
   } catch (error) {
     return {
       statusCode: 500,
