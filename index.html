@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CryptoReg Monitor — AI Compliance Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#09090f;--ink2:#111118;--ink3:#1a1a24;--ink4:#22222f;
+  --line:rgba(255,255,255,0.06);--line2:rgba(255,255,255,0.11);--line3:rgba(255,255,255,0.18);
+  --txt:#f0f0f8;--txt2:#9090a8;--txt3:#55556a;
+  --gold:#c8a96e;--gold2:#e8c98a;--gg:rgba(200,169,110,0.12);
+  --red:#ff4455;--rb:rgba(255,68,85,0.08);
+  --orange:#ff7733;--ob:rgba(255,119,51,0.08);
+  --yellow:#ffcc44;--yb:rgba(255,204,68,0.08);
+  --green:#33dd88;--gb:rgba(51,221,136,0.08);
+  --blue:#4499ff;--bb:rgba(68,153,255,0.08);
+  --r:6px;
+}
+html{background:var(--ink);color:var(--txt);font-family:'Instrument Sans',sans-serif;font-size:14px;line-height:1.6;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--ink4);border-radius:4px}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.5}
+
+/* ── LOGIN ──────────────────────────────────────────────── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;
+  background:radial-gradient(ellipse 70% 50% at 15% 110%,rgba(200,169,110,0.08) 0%,transparent 55%),
+             radial-gradient(ellipse 50% 40% at 85% -10%,rgba(68,153,255,0.05) 0%,transparent 55%),var(--ink)}
+.lc{width:100%;max-width:440px}
+.lcard{background:var(--ink2);border:1px solid var(--line2);border-radius:16px;padding:48px 40px 40px;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.6}
+.ley{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ley::before{content:'';width:20px;height:1px;background:var(--gold);opacity:0.4}
+.ltitle{font-family:'Bebas Neue',sans-serif;font-size:46px;letter-spacing:2px;line-height:1;color:var(--txt);margin-bottom:6px}
+.lsub{font-size:13px;color:var(--txt3);margin-bottom:32px;font-style:italic}
+.l-note{display:flex;align-items:flex-start;gap:10px;background:var(--ink3);border:1px solid rgba(51,221,136,0.2);border-radius:var(--r);padding:12px 14px;margin-bottom:24px}
+.l-note-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.l-note-text{font-size:12px;color:var(--txt2);line-height:1.5}
+.fl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);display:block;margin-bottom:8px}
+.fi{width:100%;background:var(--ink3);border:1px solid var(--line2);border-radius:var(--r);padding:13px 16px;color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;margin-bottom:14px}
+.fi:focus{border-color:rgba(200,169,110,0.5);box-shadow:0 0 0 3px rgba(200,169,110,0.06)}
+.fi::placeholder{color:var(--txt3)}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--gold) 0%,#9a7030 100%);border:none;border-radius:var(--r);padding:14px;color:#09090f;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:opacity 0.2s,transform 0.15s}
+.lbtn:hover{opacity:0.88;transform:translateY(-1px)}
+.lbtn:disabled{opacity:0.4;transform:none;cursor:not-allowed}
+.lerr{margin-top:14px;background:var(--rb);border:1px solid rgba(255,68,85,0.2);border-radius:var(--r);padding:10px 14px;color:#ff8899;font-size:12px;display:none}
+.ltiers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.ltier{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:center}
+.ltp{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold2);letter-spacing:1px}
+.ltn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:2px}
+
+/* ── DASHBOARD ──────────────────────────────────────────── */
+#dashboard{display:none;min-height:100vh}
+
+/* TOPBAR */
+.tb{position:fixed;top:0;left:0;right:0;height:54px;background:rgba(9,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:200}
+.tb-logo{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:2px;color:var(--txt)}
+.tb-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,169,110,0.3);border-radius:3px;padding:2px 7px}
+.tb-sp{flex:1}
+.tb-live{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:lp 2s ease infinite}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:0.3}}
+.tb-co{font-size:13px;color:var(--txt2);padding:0 14px;border-left:1px solid var(--line)}
+.tb-tier{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:var(--gg);border:1px solid rgba(200,169,110,0.2);border-radius:4px;padding:3px 9px}
+.tb-btn{display:flex;align-items:center;gap:6px;background:var(--ink3);border:1px solid var(--line2);border-radius:var(--r);padding:7px 12px;color:var(--txt2);font-size:12px;cursor:pointer;transition:all 0.15s;text-decoration:none;white-space:nowrap}
+.tb-btn:hover{border-color:var(--line3);color:var(--txt)}
+.tb-up{background:linear-gradient(135deg,rgba(200,169,110,0.15),rgba(200,169,110,0.04));border-color:rgba(200,169,110,0.3);color:var(--gold2)}
+.tb-out{background:none;border:none;cursor:pointer;color:var(--txt3);padding:6px;border-radius:var(--r);transition:color 0.15s}
+.tb-out:hover{color:var(--red)}
+
+/* TICKER */
+.tick{height:34px;background:var(--ink2);border-bottom:1px solid var(--line);display:flex;align-items:center;overflow:hidden}
+.tick-lbl{flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:var(--gg);border-right:1px solid var(--line);padding:0 14px;height:100%;display:flex;align-items:center}
+.tick-inner{display:flex;align-items:center;gap:40px;white-space:nowrap;animation:tm 35s linear infinite;padding-left:100%}
+@keyframes tm{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ti{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt3);display:flex;align-items:center;gap:8px}
+.tdot{width:5px;height:5px;border-radius:50%}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:260px 1fr;padding-top:88px;min-height:100vh}
+
+/* SIDEBAR */
+.sb{border-right:1px solid var(--line);background:var(--ink2);position:sticky;top:88px;height:calc(100vh - 88px);overflow-y:auto;padding:20px 0}
+.sb-sec{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);padding:0 18px;margin:18px 0 8px}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 18px;color:var(--txt3);font-size:13px;cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;user-select:none}
+.ni:hover{color:var(--txt2);background:rgba(255,255,255,0.025)}
+.ni.active{color:var(--gold2);border-left-color:var(--gold);background:var(--gg)}
+.agent-list{padding:0 18px;display:flex;flex-direction:column;gap:6px}
+.ap{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r)}
+.ap-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ap-name{font-size:12px;font-weight:500;color:var(--txt2)}
+.ap-desc{font-size:10px;color:var(--txt3);font-family:'JetBrains Mono',monospace}
+.sbs{padding:0 18px;display:flex;flex-direction:column;gap:8px}
+.sbr{display:flex;align-items:center;justify-content:space-between}
+.sbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)}
+.sbv{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt2)}
+
+/* CONTENT */
+.ct{padding:28px;background:radial-gradient(ellipse 90% 25% at 50% 0%,rgba(200,169,110,0.025) 0%,transparent 60%),var(--ink)}
+
+/* HERO */
+.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.hc{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:20px;position:relative;overflow:hidden;transition:border-color 0.2s}
+.hc:hover{border-color:var(--line2)}
+.hc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac,var(--gold)),transparent);opacity:0.35}
+.hc.cg{--ac:var(--gold)}.hc.cr{--ac:var(--red)}.hc.cgr{--ac:var(--green)}.hc.co{--ac:var(--orange)}
+.hc-ey{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
+.hc-v{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;line-height:1;color:var(--txt);margin-bottom:4px}
+.hc-v.sm{font-size:22px}
+.hc-v.rCRITICAL{color:var(--red)}.hc-v.rHIGH{color:var(--orange)}.hc-v.rMEDIUM{color:var(--yellow)}.hc-v.rLOW{color:var(--green)}
+.hc-s{font-size:11px;color:var(--txt3)}
+
+/* SCAN FORM */
+.scan-card{background:var(--ink2);border:1px solid var(--line2);border-radius:14px;padding:26px;margin-bottom:22px;position:relative;overflow:hidden}
+.scan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.4}
+.scan-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--txt);margin-bottom:4px}
+.scan-sub{font-size:13px;color:var(--txt3);margin-bottom:18px;font-style:italic}
+.scan-row{display:flex;gap:10px;flex-wrap:wrap}
+.scan-input{flex:1;min-width:200px;background:var(--ink3);border:1px solid var(--line2);border-radius:var(--r);padding:11px 14px;color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:border-color 0.2s}
+.scan-input:focus{border-color:rgba(200,169,110,0.5)}
+.scan-input::placeholder{color:var(--txt3)}
+.scan-btn{background:linear-gradient(135deg,var(--gold) 0%,#9a7030 100%);border:none;border-radius:var(--r);padding:11px 22px;color:#09090f;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;transition:opacity 0.2s,transform 0.15s;white-space:nowrap}
+.scan-btn:hover{opacity:0.88;transform:translateY(-1px)}
+.scan-btn:disabled{opacity:0.4;transform:none;cursor:not-allowed}
+.scan-err{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);display:none}
+
+/* PIPELINE */
+.pipeline{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:22px;display:none}
+.pl-title{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:var(--txt);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.pl-proj{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt3);font-weight:normal;letter-spacing:0}
+.pl-agents{display:flex;flex-direction:column;gap:7px}
+.pa{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);transition:border-color 0.3s}
+.pa.running{border-color:rgba(200,169,110,0.4);animation:pab 1.2s ease infinite}
+.pa.done{border-color:rgba(51,221,136,0.3)}
+.pa.error{border-color:rgba(255,68,85,0.3)}
+@keyframes pab{0%,100%{border-color:rgba(200,169,110,0.4)}50%{border-color:rgba(200,169,110,0.12)}}
+.pa-icon{font-size:16px;width:24px;text-align:center}
+.pa-info{flex:1}
+.pa-name{font-size:12px;font-weight:500;color:var(--txt)}
+.pa-st{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)}
+.pa-st.running{color:var(--gold)}.pa-st.done{color:var(--green)}.pa-st.error{color:var(--red)}
+.pa-spin{width:14px;height:14px;border:2px solid var(--line2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;display:none}
+.pa.running .pa-spin{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* RUNS LIST */
+.shd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.st{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;color:var(--txt);display:flex;align-items:center;gap:10px}
+.sc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt3);background:var(--ink3);border:1px solid var(--line);border-radius:4px;padding:2px 8px}
+.rbtn{display:flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:var(--r);padding:6px 11px;color:var(--txt3);font-size:11px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all 0.15s}
+.rbtn:hover{border-color:var(--line2);color:var(--txt2)}
+.runs-list{display:flex;flex-direction:column;gap:8px}
+.rc{background:var(--ink2);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color 0.2s,transform 0.15s,box-shadow 0.2s;animation:csl 0.3s ease both;position:relative}
+@keyframes csl{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rc:hover{border-color:var(--line3);transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,0.45)}
+.rc-strip{position:absolute;left:0;top:0;bottom:0;width:3px}
+.rc.CRITICAL .rc-strip{background:var(--red)}.rc.HIGH .rc-strip{background:var(--orange)}.rc.MEDIUM .rc-strip{background:var(--yellow)}.rc.LOW .rc-strip{background:var(--green)}
+.rc-body{padding:16px 18px 14px 24px}
+.rc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:4px}
+.rc-name{font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:600;color:var(--txt);flex:1}
+.rc-url{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);margin-bottom:10px}
+.rbadge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;flex-shrink:0}
+.rbadge.CRITICAL{background:var(--rb);color:var(--red);border:1px solid rgba(255,68,85,0.2)}
+.rbadge.HIGH{background:var(--ob);color:var(--orange);border:1px solid rgba(255,119,51,0.2)}
+.rbadge.MEDIUM{background:var(--yb);color:var(--yellow);border:1px solid rgba(255,204,68,0.2)}
+.rbadge.LOW{background:var(--gb);color:var(--green);border:1px solid rgba(51,221,136,0.2)}
+.rbadge .bd{width:5px;height:5px;border-radius:50%;background:currentColor}
+.rc-agents{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.atag{background:var(--ink3);border:1px solid var(--line);border-radius:3px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txt3)}
+.atag.done{border-color:rgba(51,221,136,0.25);color:var(--green)}
+.rc-scores{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.rs{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)}
+.rs-bar{width:38px;height:3px;background:var(--ink4);border-radius:100px;overflow:hidden}
+.rs-fill{height:100%;border-radius:100px}
+
+/* LOADING / EMPTY */
+.ldr{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:14px}
+.ldr-ring{width:38px;height:38px;border:2px solid var(--line2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite}
+.ldr-txt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3)}
+.emp{text-align:center;padding:60px 20px}
+.emp-ic{font-size:42px;opacity:0.2;margin-bottom:14px}
+.emp-t{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px}
+.emp-s{font-size:13px;color:var(--txt3);font-style:italic}
+
+/* DRAWER */
+#ovl{position:fixed;inset:0;background:rgba(0,0,0,0.72);backdrop-filter:blur(5px);z-index:300;display:none}
+#ovl.open{display:block}
+#drw{position:fixed;right:0;top:0;bottom:0;width:700px;max-width:100vw;background:var(--ink2);border-left:1px solid var(--line2);z-index:301;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.32,0,0.15,1);display:flex;flex-direction:column;overflow:hidden}
+#drw.open{transform:translateX(0)}
+.dh{padding:20px 24px 16px;border-bottom:1px solid var(--line);flex-shrink:0;position:relative}
+.dh::before{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--sc,var(--gold)),transparent)}
+.dc{position:absolute;top:16px;right:16px;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt3);font-size:16px;transition:all 0.15s}
+.dc:hover{border-color:var(--line2);color:var(--txt)}
+.tabs{display:flex;gap:2px;background:var(--ink3);border-radius:var(--r);padding:3px;flex-shrink:0;margin:12px 24px 0}
+.tab{flex:1;padding:7px 6px;border-radius:4px;border:none;background:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.tab:hover{color:var(--txt2)}
+.tab.active{background:var(--ink4);color:var(--txt);box-shadow:0 1px 3px rgba(0,0,0,0.3)}
+.tab-panels{flex:1;overflow:hidden;position:relative}
+.tp{display:none;height:100%;overflow-y:auto;padding:20px 24px}
+.tp.active{display:block}
+
+/* PANEL COMPONENTS */
+.ds-t{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:12px;margin-top:20px}
+.ds-t:first-child{margin-top:0}
+.sum-box{font-size:13px;color:var(--txt2);line-height:1.7;padding:14px 16px;background:var(--ink3);border-left:3px solid var(--sc,var(--gold));border-radius:0 var(--r) var(--r) 0;margin-bottom:16px}
+.score-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.score-n{font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:1}
+.score-bar-w{flex:1}
+.score-bar-t{font-size:11px;color:var(--txt3);margin-bottom:5px}
+.score-bar{width:100%;height:5px;background:var(--ink4);border-radius:100px;overflow:hidden}
+.score-fill{height:100%;border-radius:100px;transition:width 0.5s ease}
+.check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:16px}
+.ci{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);font-size:12px}
+.cd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cd.y{background:var(--green);box-shadow:0 0 4px var(--green)}.cd.n{background:var(--red);box-shadow:0 0 4px var(--red)}
+.fi-item{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:7px;font-size:12px;line-height:1.55}
+.fi-item.red{border-left:3px solid var(--red)}.fi-item.yellow{border-left:3px solid var(--yellow)}.fi-item.green{border-left:3px solid var(--green)}
+.fi-q{color:var(--txt3);font-style:italic;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.fi-fix{color:var(--gold2);margin-top:6px;font-size:11px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.ig{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.ig-l{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.ig-v{font-size:13px;color:var(--txt2)}
+.ig-v.rCRITICAL{color:var(--red);font-weight:600}.ig-v.rHIGH{color:var(--orange);font-weight:600}.ig-v.rMEDIUM{color:var(--yellow);font-weight:600}.ig-v.rLOW{color:var(--green);font-weight:600}
+.doc-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dt{padding:6px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:4px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);transition:all 0.15s}
+.dt:hover,.dt.active{border-color:rgba(200,169,110,0.4);color:var(--gold2);background:var(--gg)}
+.doc-body{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:16px;font-size:13px;color:var(--txt2);line-height:1.8;white-space:pre-wrap;max-height:420px;overflow-y:auto}
+.copy-btn{margin-top:8px;background:none;border:1px solid var(--line2);border-radius:var(--r);padding:7px 14px;color:var(--txt3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.15s}
+.copy-btn:hover{border-color:var(--gold);color:var(--gold2)}
+
+/* RESPONSIVE */
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.sb{display:none}#drw{width:100%}}
+@media(max-width:700px){.hgrid{grid-template-columns:1fr 1fr}.ct{padding:16px}.scan-row{flex-direction:column}.tb-co,.tb-tier{display:none}.tabs{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="lc">
+    <div class="lcard">
+      <div class="ley">AI Compliance Intelligence</div>
+      <div class="ltitle">CryptoReg<br>Monitor</div>
+      <div class="lsub">Multi-agent compliance pipeline — UAE &amp; United States</div>
+      <div class="l-note">
+        <div class="l-note-icon">🔒</div>
+        <div class="l-note-text">Your API key is sent securely via an encrypted header and never stored in the browser or exposed in URLs.</div>
+      </div>
+      <label class="fl" for="ak">API Access Key</label>
+      <input class="fi" id="ak" type="password" placeholder="Enter your API key..." autocomplete="off" spellcheck="false">
+      <button class="lbtn" id="lbtn">ACCESS DASHBOARD</button>
+      <div class="lerr" id="lerr"></div>
+      <div class="ltiers">
+        <div class="ltier"><div class="ltp">$199</div><div class="ltn">/ mo · Starter</div></div>
+        <div class="ltier"><div class="ltp">$499</div><div class="ltn">/ mo · Pro</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ─────────────────────────────────────────── -->
+<div id="dashboard">
+
+  <header class="tb">
+    <span class="tb-logo">CryptoReg</span>
+    <span class="tb-tag">MONITOR</span>
+    <div class="tb-live"><span class="ldot"></span>AGENTS ONLINE</div>
+    <div class="tb-sp"></div>
+    <span class="tb-co" id="tb-co">—</span>
+    <span class="tb-tier" id="tb-tier">—</span>
+    <a class="tb-btn tb-up" id="tb-up" href="#" target="_blank">⭐ Upgrade</a>
+    <button class="tb-btn" onclick="loadRuns()">↺ Refresh</button>
+    <button class="tb-out" onclick="logout()" title="Logout">
+      <svg viewBox="0 0 14 14" fill="none" width="14" height="14"><path d="M5 13H3a1 1 0 01-1-1V2a1 1 0 011-1h2M9 10l3-3-3-3M12 7H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+
+  <div class="tick">
+    <div class="tick-lbl">AGENTS</div>
+    <div style="overflow:hidden;flex:1;height:100%;display:flex;align-items:center">
+      <div class="tick-inner">
+        <span class="ti"><span class="tdot" style="background:var(--gold)"></span>🧠 Orchestrator — sequences all agents in pipeline</span>
+        <span class="ti"><span class="tdot" style="background:var(--blue)"></span>🕷️ Crawler — whitepaper, audit links, KYC, disclaimer assets</span>
+        <span class="ti"><span class="tdot" style="background:var(--orange)"></span>📊 Tokenomics — staking, APY, Howey test, supply analysis</span>
+        <span class="ti"><span class="tdot" style="background:var(--yellow)"></span>📢 Content — marketing caution score, Red/Yellow/Green flags</span>
+        <span class="ti"><span class="tdot" style="background:var(--green)"></span>⚙️ Generator — Disclaimer, Risk Disclosure, Privacy Policy, Terms of Use</span>
+        <span class="ti"><span class="tdot" style="background:var(--gold)"></span>🧠 Orchestrator — sequences all agents in pipeline</span>
+        <span class="ti"><span class="tdot" style="background:var(--blue)"></span>🕷️ Crawler — whitepaper, audit links, KYC, disclaimer assets</span>
+        <span class="ti"><span class="tdot" style="background:var(--orange)"></span>📊 Tokenomics — staking, APY, Howey test, supply analysis</span>
+        <span class="ti"><span class="tdot" style="background:var(--yellow)"></span>📢 Content — marketing caution score, Red/Yellow/Green flags</span>
+        <span class="ti"><span class="tdot" style="background:var(--green)"></span>⚙️ Generator — Disclaimer, Risk Disclosure, Privacy Policy, Terms of Use</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sb">
+      <div class="sb-sec">Navigation</div>
+      <div class="ni active">
+        <svg viewBox="0 0 14 14" fill="none" width="13" height="13"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+        Compliance Runs
+      </div>
+      <div class="sb-sec">Agent Pipeline</div>
+      <div class="agent-list">
+        <div class="ap"><div class="ap-icon" style="background:rgba(200,169,110,0.1)">🧠</div><div><div class="ap-name">Orchestrator</div><div class="ap-desc">Pipeline manager</div></div></div>
+        <div class="ap"><div class="ap-icon" style="background:rgba(68,153,255,0.1)">🕷️</div><div><div class="ap-name">Crawler</div><div class="ap-desc">Asset scanner</div></div></div>
+        <div class="ap"><div class="ap-icon" style="background:rgba(255,119,51,0.1)">📊</div><div><div class="ap-name">Tokenomics</div><div class="ap-desc">Risk analyzer</div></div></div>
+        <div class="ap"><div class="ap-icon" style="background:rgba(255,204,68,0.1)">📢</div><div><div class="ap-name">Content</div><div class="ap-desc">Marketing audit</div></div></div>
+        <div class="ap"><div class="ap-icon" style="background:rgba(51,221,136,0.1)">⚙️</div><div><div class="ap-name">Generator</div><div class="ap-desc">Doc drafts</div></div></div>
+      </div>
+      <div class="sb-sec">Account</div>
+      <div class="sbs">
+        <div class="sbr"><span class="sbl">Total Scans</span><span class="sbv" id="sb-tot">—</span></div>
+        <div class="sbr"><span class="sbl">Jurisdiction</span><span class="sbv" id="sb-jur">—</span></div>
+        <div class="sbr"><span class="sbl">Plan</span><span class="sbv" id="sb-plan">—</span></div>
+      </div>
+    </aside>
+
+    <div class="ct">
+      <div class="hgrid">
+        <div class="hc cg"><div class="hc-ey">Total Scans</div><div class="hc-v" id="hs-total">0</div><div class="hc-s">All runs</div></div>
+        <div class="hc cr"><div class="hc-ey">Last Risk</div><div class="hc-v sm" id="hs-risk">—</div><div class="hc-s">Latest scan</div></div>
+        <div class="hc co"><div class="hc-ey">Avg Score</div><div class="hc-v" id="hs-avg">—</div><div class="hc-s">Composite 1-10</div></div>
+        <div class="hc cgr"><div class="hc-ey">Agents</div><div class="hc-v">5</div><div class="hc-s">Online</div></div>
+      </div>
+
+      <div class="scan-card">
+        <div class="scan-title">New Compliance Scan</div>
+        <div class="scan-sub">Run all 5 agents against any crypto project URL</div>
+        <div class="scan-row">
+          <input class="scan-input" id="scan-name" type="text" placeholder="Project name (optional)">
+          <input class="scan-input" id="scan-url" type="url" placeholder="https://project-website.com">
+          <button class="scan-btn" id="scan-btn" onclick="startScan()">▶ RUN SCAN</button>
+        </div>
+        <div class="scan-err" id="scan-err"></div>
+      </div>
+
+      <div class="pipeline" id="pipeline">
+        <div class="pl-title">🧠 Pipeline Running <span class="pl-proj" id="pl-proj"></span></div>
+        <div class="pl-agents">
+          <div class="pa" id="pa-crawler"><div class="pa-icon">🕷️</div><div class="pa-info"><div class="pa-name">Crawler Agent</div><div class="pa-st" id="ps-crawler">Waiting...</div></div><div class="pa-spin"></div></div>
+          <div class="pa" id="pa-tokenomics"><div class="pa-icon">📊</div><div class="pa-info"><div class="pa-name">Tokenomics Agent</div><div class="pa-st" id="ps-tokenomics">Waiting...</div></div><div class="pa-spin"></div></div>
+          <div class="pa" id="pa-content"><div class="pa-icon">📢</div><div class="pa-info"><div class="pa-name">Content Agent</div><div class="pa-st" id="ps-content">Waiting...</div></div><div class="pa-spin"></div></div>
+          <div class="pa" id="pa-generator"><div class="pa-icon">⚙️</div><div class="pa-info"><div class="pa-name">Generator Agent</div><div class="pa-st" id="ps-generator">Waiting...</div></div><div class="pa-spin"></div></div>
+        </div>
+      </div>
+
+      <div class="shd">
+        <div class="st">Compliance Runs <span class="sc" id="runs-sc">0</span></div>
+        <button class="rbtn" onclick="loadRuns()">↺ Refresh</button>
+      </div>
+      <div class="runs-list" id="runs-list">
+        <div class="ldr"><div class="ldr-ring"></div><div class="ldr-txt">Loading runs...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DRAWER ────────────────────────────────────────────── -->
+<div id="ovl" onclick="closeD()"></div>
+<div id="drw">
+  <div class="dh" id="drw-hd">
+    <button class="dc" onclick="closeD()">✕</button>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:6px" id="dr-ey"></div>
+    <div style="font-family:'Instrument Sans',sans-serif;font-size:17px;font-weight:600;padding-right:36px;margin-bottom:10px" id="dr-ti"></div>
+    <div id="dr-bd" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="sTab('overview')" id="tab-overview">◈ Overview</button>
+    <button class="tab" onclick="sTab('crawler')" id="tab-crawler">🕷️ Crawl</button>
+    <button class="tab" onclick="sTab('tokenomics')" id="tab-tokenomics">📊 Token</button>
+    <button class="tab" onclick="sTab('content')" id="tab-content">📢 Content</button>
+    <button class="tab" onclick="sTab('generator')" id="tab-generator">⚙️ Docs</button>
+  </div>
+  <div class="tab-panels">
+    <div class="tp active" id="tp-overview"></div>
+    <div class="tp" id="tp-crawler"></div>
+    <div class="tp" id="tp-tokenomics"></div>
+    <div class="tp" id="tp-content"></div>
+    <div class="tp" id="tp-generator"></div>
+  </div>
+</div>
+
+<script>
+// API goes through Netlify Function proxy — key sent in header, never in URL
+const API    = '/api';
+const PAD    = 'REPLACE_WITH_PADDLE_CHECKOUT_URL';
+
+let apiKey = null, clientData = null, allRuns = [];
+const RC = {CRITICAL:'var(--red)',HIGH:'var(--orange)',MEDIUM:'var(--yellow)',LOW:'var(--green)'};
+const AGENTS = ['crawler','tokenomics','content','generator'];
+const AICONS = {crawler:'🕷️',tokenomics:'📊',content:'📢',generator:'⚙️'};
+
+// ── INIT ──────────────────────────────────────────────────
+(function(){
+  // Never read key from URL — only from secure sessionStorage
+  const k = sessionStorage.getItem('crm');
+  if(k){ apiKey=k; boot(); }
+  document.getElementById('ak').addEventListener('keydown',e=>{ if(e.key==='Enter') doL(); });
+  document.getElementById('lbtn').addEventListener('click', doL);
+})();
+
+function doL(){
+  const v = document.getElementById('ak').value.trim();
+  if(!v) return;
+  apiKey = v;
+  // Store in sessionStorage only — cleared when tab closes
+  sessionStorage.setItem('crm', v);
+  boot();
+}
+function boot(){ document.getElementById('login-screen').style.display='none'; document.getElementById('dashboard').style.display='block'; loadRuns(); }
+function logout(){ sessionStorage.removeItem('crm'); location.reload(); }
+
+// ── AUTH FETCH helper — key always in header ──────────────
+async function apiFetch(path='', opts={}){
+  return fetch(API+path, {
+    ...opts,
+    headers: { 'Content-Type':'application/json', 'x-api-key': apiKey, ...(opts.headers||{}) },
+  });
+}
+
+// ── LOAD RUNS ─────────────────────────────────────────────
+async function loadRuns(){
+  document.getElementById('runs-list').innerHTML=`<div class="ldr"><div class="ldr-ring"></div><div class="ldr-txt">Loading...</div></div>`;
+  try{
+    const r = await apiFetch('?limit=20');
+    if(r.status===401){ showErr('Invalid API key.'); return; }
+    if(!r.ok) throw new Error('API '+r.status);
+    const d = await r.json();
+    clientData = d.client; allRuns = d.runs||[];
+    renderClient(); renderRuns();
+  }catch(e){
+    document.getElementById('runs-list').innerHTML=`<div class="emp"><div class="emp-ic">⚠</div><div class="emp-t">Load Failed</div><div class="emp-s">${es(e.message)}</div></div>`;
+  }
+}
+
+function renderClient(){
+  const c = clientData; if(!c) return;
+  document.getElementById('tb-co').textContent   = c.company_name;
+  document.getElementById('tb-tier').textContent = c.tier.toUpperCase();
+  document.getElementById('tb-up').href          = `${PAD}?client_id=${c.client_id}`;
+  document.getElementById('hs-total').textContent = allRuns.length;
+  document.getElementById('sb-tot').textContent   = allRuns.length;
+  document.getElementById('sb-jur').textContent   = c.jurisdiction_focus||'UAE+US';
+  document.getElementById('sb-plan').textContent  = c.tier.charAt(0).toUpperCase()+c.tier.slice(1);
+  if(allRuns.length){
+    const lr = allRuns[0];
+    const el = document.getElementById('hs-risk');
+    el.textContent = lr.overall_risk||'—'; el.className='hc-v sm r'+(lr.overall_risk||'');
+    const sc = allRuns.map(r=>r.composite_score||0).filter(s=>s>0);
+    document.getElementById('hs-avg').textContent = sc.length ? Math.round(sc.reduce((a,b)=>a+b,0)/sc.length) : '—';
+  }
+}
+
+function renderRuns(){
+  const el = document.getElementById('runs-list');
+  document.getElementById('runs-sc').textContent = allRuns.length;
+  if(!allRuns.length){
+    el.innerHTML=`<div class="emp"><div class="emp-ic">◎</div><div class="emp-t">No Scans Yet</div><div class="emp-s">Enter a project URL above to run the compliance pipeline.</div></div>`;
+    return;
+  }
+  el.innerHTML = allRuns.map((r,i)=>`
+    <div class="rc ${r.overall_risk||'LOW'}" style="animation-delay:${i*.03}s" onclick="openD(${i})">
+      <div class="rc-strip"></div>
+      <div class="rc-body">
+        <div class="rc-top">
+          <div><div class="rc-name">${es(r.project_name||r.project_url)}</div><div class="rc-url">${es(r.project_url||'')}</div></div>
+          <span class="rbadge ${r.overall_risk||'LOW'}"><span class="bd"></span>${r.overall_risk||'LOW'}</span>
+        </div>
+        <div class="rc-agents">${AGENTS.map(a=>`<span class="atag ${(r.agents_completed||[]).includes(a)?'done':''}">${AICONS[a]} ${a}</span>`).join('')}</div>
+        <div class="rc-scores">
+          <span class="rs">Crawl<div class="rs-bar"><div class="rs-fill" style="width:${(r.crawler?.asset_risk_score||0)*10}%;background:var(--orange)"></div></div>${r.crawler?.asset_risk_score||0}/10</span>
+          <span class="rs">Token<div class="rs-bar"><div class="rs-fill" style="width:${(r.tokenomics?.risk_score||0)*10}%;background:var(--yellow)"></div></div>${r.tokenomics?.risk_score||0}/10</span>
+          <span class="rs">Mktg<div class="rs-bar"><div class="rs-fill" style="width:${(r.content?.marketing_caution_score||0)*10}%;background:var(--red)"></div></div>${r.content?.marketing_caution_score||0}/10</span>
+          <span class="rs" style="margin-left:auto;color:var(--txt3);font-size:9px">${fd(r.completed_at||r.started_at)}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ── SCAN ──────────────────────────────────────────────────
+async function startScan(){
+  const url  = document.getElementById('scan-url').value.trim();
+  const name = document.getElementById('scan-name').value.trim();
+  const err  = document.getElementById('scan-err');
+  if(!url){ err.textContent='Please enter a project URL.'; err.style.display='block'; return; }
+  err.style.display='none';
+
+  const btn = document.getElementById('scan-btn');
+  btn.disabled=true; btn.textContent='⏳ SCANNING...';
+
+  const pl = document.getElementById('pipeline');
+  pl.style.display='block';
+  document.getElementById('pl-proj').textContent = `— ${name||url}`;
+  AGENTS.forEach(a=>{ document.getElementById('pa-'+a).className='pa'; document.getElementById('ps-'+a).textContent='Waiting...'; document.getElementById('ps-'+a).className='pa-st'; });
+
+  let idx=0;
+  const iv = setInterval(()=>{
+    if(idx>0){ const p=AGENTS[idx-1]; document.getElementById('pa-'+p).className='pa done'; const s=document.getElementById('ps-'+p); s.textContent='Completed'; s.className='pa-st done'; }
+    if(idx<AGENTS.length){ const c=AGENTS[idx]; document.getElementById('pa-'+c).className='pa running'; const s=document.getElementById('ps-'+c); s.textContent='Running...'; s.className='pa-st running'; idx++; }
+    else clearInterval(iv);
+  }, 4500);
+
+  try{
+    const res = await apiFetch('', { method:'POST', body: JSON.stringify({ project_url:url, project_name:name }) });
+    clearInterval(iv);
+    if(!res.ok) throw new Error('Scan failed: '+res.status);
+    const data = await res.json();
+    AGENTS.forEach(a=>{ document.getElementById('pa-'+a).className='pa done'; const s=document.getElementById('ps-'+a); s.textContent='Completed'; s.className='pa-st done'; });
+    setTimeout(()=>{ pl.style.display='none'; }, 1800);
+    allRuns.unshift(data); renderRuns(); renderClient(); openD(0);
+  }catch(e){
+    clearInterval(iv);
+    AGENTS.forEach(a=>{ document.getElementById('pa-'+a).className='pa'; document.getElementById('ps-'+a).textContent='—'; });
+    pl.style.display='none';
+    err.textContent=e.message; err.style.display='block';
+  }finally{
+    btn.disabled=false; btn.textContent='▶ RUN SCAN';
+    document.getElementById('scan-url').value='';
+    document.getElementById('scan-name').value='';
+  }
+}
+
+// ── DRAWER ────────────────────────────────────────────────
+function openD(idx){
+  const r = allRuns[idx]; if(!r) return;
+  const color = RC[r.overall_risk]||'var(--gold)';
+  document.getElementById('drw-hd').style.setProperty('--sc', color);
+  document.getElementById('dr-ey').innerHTML=`${fd(r.completed_at||r.started_at)} · Score ${r.composite_score||0}/10`;
+  document.getElementById('dr-ti').textContent = r.project_name||r.project_url;
+  document.getElementById('dr-bd').innerHTML=`<span class="rbadge ${r.overall_risk||'LOW'}"><span class="bd"></span>${r.overall_risk||'LOW'}</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);border:1px solid var(--line);border-radius:4px;padding:3px 8px">${es(r.project_url||'')}</span>`;
+
+  rOverview(r,color); rCrawler(r.crawler||{}); rTokenomics(r.tokenomics||{}); rContent(r.content||{}); rGenerator(r.generator||{});
+  sTab('overview');
+  document.getElementById('ovl').classList.add('open');
+  document.getElementById('drw').classList.add('open');
+}
+function closeD(){ document.getElementById('ovl').classList.remove('open'); document.getElementById('drw').classList.remove('open'); }
+function sTab(n){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tp').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+  document.getElementById('tp-'+n).classList.add('active');
+}
+
+// ── TAB: OVERVIEW ─────────────────────────────────────────
+function rOverview(r,color){
+  const c=r.crawler||{},t=r.tokenomics||{},co=r.content||{};
+  document.getElementById('tp-overview').innerHTML=`
+    <div class="info-grid">
+      <div class="ig"><div class="ig-l">Overall Risk</div><div class="ig-v r${r.overall_risk}">${r.overall_risk||'—'}</div></div>
+      <div class="ig"><div class="ig-l">Composite Score</div><div class="ig-v">${r.composite_score||0}/10</div></div>
+      <div class="ig"><div class="ig-l">Token Type</div><div class="ig-v">${t.token_type||'—'}</div></div>
+      <div class="ig"><div class="ig-l">SEC Howey Risk</div><div class="ig-v r${t.sec_howey_risk||''}">${t.sec_howey_risk||'—'}</div></div>
+      <div class="ig"><div class="ig-l">Content Verdict</div><div class="ig-v">${co.overall_verdict||'—'}</div></div>
+      <div class="ig"><div class="ig-l">Marketing Score</div><div class="ig-v">${co.marketing_caution_score||0}/10</div></div>
+    </div>
+    <div class="ds-t">Agent Scores</div>
+    ${[{n:'Crawler — Asset Risk',v:c.asset_risk_score||0,col:'var(--orange)'},{n:'Tokenomics — Token Risk',v:t.risk_score||0,col:'var(--yellow)'},{n:'Content — Marketing Caution',v:co.marketing_caution_score||0,col:'var(--red)'}].map(s=>`
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);margin-bottom:4px"><span>${s.n}</span><span>${s.v}/10</span></div>
+        <div class="score-bar"><div class="score-fill" style="width:${s.v*10}%;background:${s.col}"></div></div>
+      </div>`).join('')}
+    <div class="ds-t">Agents Completed</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">${(r.agents_completed||[]).map(a=>`<span class="atag done">${AICONS[a]||''} ${a}</span>`).join('')||'<span style="font-size:12px;color:var(--txt3);font-style:italic">None</span>'}</div>
+    ${(r.agents_failed||[]).length?`<div class="ds-t">Failed</div><div style="color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px">${r.agents_failed.join(', ')}</div>`:''}
+  `;
+}
+
+// ── TAB: CRAWLER ──────────────────────────────────────────
+function rCrawler(c){
+  const af = c.assets_found||{};
+  const checks=[['whitepaper','Whitepaper'],['disclaimer','Disclaimer'],['risk_disclosure','Risk Disclosure'],['privacy_policy','Privacy Policy'],['terms_of_use','Terms of Use'],['audit_report','Audit Report'],['kyc_aml_policy','KYC/AML Policy'],['legal_entity_disclosed','Legal Entity'],['regulatory_registration','Regulatory Reg.'],['contact_information','Contact Info']];
+  document.getElementById('tp-crawler').innerHTML=`
+    <div class="score-row" style="--sc:var(--orange)">
+      <div class="score-n" style="color:var(--orange)">${c.asset_risk_score||0}</div>
+      <div class="score-bar-w"><div class="score-bar-t">Asset Risk Score — ${c.asset_risk_score||0}/10</div><div class="score-bar"><div class="score-fill" style="width:${(c.asset_risk_score||0)*10}%;background:var(--orange)"></div></div></div>
+    </div>
+    <div class="ds-t">Compliance Assets</div>
+    <div class="check-grid">${checks.map(([k,l])=>`<div class="ci"><div class="cd ${af[k]?'y':'n'}"></div>${l}</div>`).join('')}</div>
+    ${c.missing_critical?.length?`<div class="ds-t">Missing Critical</div>${c.missing_critical.map(m=>`<div class="fi-item red">⚠ ${es(m)}</div>`).join('')}`:''}
+    ${c.red_flags?.length?`<div class="ds-t">Red Flags</div>${c.red_flags.map(f=>`<div class="fi-item red">🚩 ${es(f)}</div>`).join('')}`:''}
+    ${c.crawl_summary?`<div class="ds-t">Summary</div><div class="sum-box" style="border-left-color:var(--orange)">${es(c.crawl_summary)}</div>`:''}
+    ${c.recommended_actions?.length?`<div class="ds-t">Recommended Actions</div>${c.recommended_actions.map((a,i)=>`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--txt2)"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)">${i+1}.</span>${es(a)}</div>`).join('')}`:''}
+  `;
+}
+
+// ── TAB: TOKENOMICS ───────────────────────────────────────
+function rTokenomics(t){
+  document.getElementById('tp-tokenomics').innerHTML=`
+    <div class="score-row" style="--sc:var(--yellow)">
+      <div class="score-n" style="color:var(--yellow)">${t.risk_score||0}</div>
+      <div class="score-bar-w"><div class="score-bar-t">${t.risk_rating||'—'} — ${t.risk_score||0}/10</div><div class="score-bar"><div class="score-fill" style="width:${(t.risk_score||0)*10}%;background:var(--yellow)"></div></div></div>
+    </div>
+    <div class="info-grid">
+      <div class="ig"><div class="ig-l">Token Type</div><div class="ig-v">${t.token_type||'—'}</div></div>
+      <div class="ig"><div class="ig-l">Howey Test Risk</div><div class="ig-v r${t.sec_howey_risk||''}">${t.sec_howey_risk||'—'}</div></div>
+      <div class="ig"><div class="ig-l">Staking</div><div class="ig-v">${t.staking_detected?'✓ Detected':'✗ None'}</div></div>
+      <div class="ig"><div class="ig-l">APY Claims</div><div class="ig-v">${t.apy_claims?'⚠ Yes':'✓ None'}</div></div>
+    </div>
+    ${t.apy_values_found?.length?`<div class="ds-t">APY Values Found</div><div style="display:flex;gap:6px;flex-wrap:wrap">${t.apy_values_found.map(v=>`<span style="background:var(--ob);border:1px solid rgba(255,119,51,0.2);border-radius:4px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange)">${es(v)}</span>`).join('')}</div>`:''}
+    ${t.tokenomics_summary?`<div class="ds-t">Summary</div><div class="sum-box" style="border-left-color:var(--yellow)">${es(t.tokenomics_summary)}</div>`:''}
+    ${t.regulatory_risk_factors?.length?`<div class="ds-t">Risk Factors</div>${t.regulatory_risk_factors.map(f=>`<div class="fi-item yellow">⚡ ${es(f)}</div>`).join('')}`:''}
+    ${t.recommended_disclosures?.length?`<div class="ds-t">Required Disclosures</div>${t.recommended_disclosures.map((d,i)=>`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--txt2)"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)">${i+1}.</span>${es(d)}</div>`).join('')}`:''}
+  `;
+}
+
+// ── TAB: CONTENT ──────────────────────────────────────────
+function rContent(c){
+  document.getElementById('tp-content').innerHTML=`
+    <div class="score-row" style="--sc:var(--red)">
+      <div class="score-n" style="color:var(--red)">${c.marketing_caution_score||0}</div>
+      <div class="score-bar-w"><div class="score-bar-t">${c.overall_verdict||'—'} — ${c.marketing_caution_score||0}/10</div><div class="score-bar"><div class="score-fill" style="width:${(c.marketing_caution_score||0)*10}%;background:var(--red)"></div></div></div>
+    </div>
+    <div class="info-grid">
+      <div class="ig"><div class="ig-l">Guarantee Language</div><div class="ig-v">${c.guarantee_language_detected?'🚩 Detected':'✓ None'}</div></div>
+      <div class="ig"><div class="ig-l">Return Promises</div><div class="ig-v">${c.return_promises_detected?'🚩 Detected':'✓ None'}</div></div>
+      <div class="ig"><div class="ig-l">Urgency Tactics</div><div class="ig-v">${c.urgency_manipulation_detected?'🚩 Detected':'✓ None'}</div></div>
+      <div class="ig"><div class="ig-l">Risk Warnings</div><div class="ig-v">${c.risk_warnings_present?'✓ Present':'⚠ Missing'}</div></div>
+    </div>
+    ${c.red_flags?.length?`<div class="ds-t" style="color:var(--red)">🚩 Red Flags (${c.red_flags.length})</div>${c.red_flags.map(f=>`<div class="fi-item red"><strong style="font-size:12px">${es(f.issue)}</strong>${f.quote?`<div class="fi-q">"${es(f.quote)}"</div>`:''}${f.regulation_violated?`<div style="font-size:10px;color:var(--orange);margin-top:3px;font-family:'JetBrains Mono',monospace">${es(f.regulation_violated)}</div>`:''}${f.fix_required?`<div class="fi-fix">→ ${es(f.fix_required)}</div>`:''}</div>`).join('')}`:''}
+    ${c.yellow_flags?.length?`<div class="ds-t" style="color:var(--yellow)">⚡ Yellow Flags (${c.yellow_flags.length})</div>${c.yellow_flags.map(f=>`<div class="fi-item yellow"><strong style="font-size:12px">${es(f.issue)}</strong>${f.quote?`<div class="fi-q">"${es(f.quote)}"</div>`:''}${f.recommendation?`<div class="fi-fix" style="color:var(--yellow)">→ ${es(f.recommendation)}</div>`:''}</div>`).join('')}`:''}
+    ${c.green_flags?.length?`<div class="ds-t" style="color:var(--green)">✓ Green Flags</div>${c.green_flags.map(f=>`<div class="fi-item green" style="font-size:12px">✓ ${es(f)}</div>`).join('')}`:''}
+    ${c.content_summary?`<div class="ds-t">Summary</div><div class="sum-box" style="border-left-color:var(--red)">${es(c.content_summary)}</div>`:''}
+  `;
+}
+
+// ── TAB: GENERATOR ────────────────────────────────────────
+function rGenerator(g){
+  const docs = g.documents||{};
+  const avail = Object.keys(docs);
+  if(!avail.length){
+    document.getElementById('tp-generator').innerHTML=`<div class="emp" style="padding:40px 0"><div class="emp-ic">⚙️</div><div class="emp-t">No Documents</div><div class="emp-s">Generator did not run or returned no content.</div></div>`;
+    return;
+  }
+  const labels={disclaimer:'Disclaimer',risk_disclosure:'Risk Disclosure',privacy_policy:'Privacy Policy',terms_of_use:'Terms of Use'};
+  window._docs = docs;
+  window._activeDoc = avail[0];
+  document.getElementById('tp-generator').innerHTML=`
+    <div style="font-size:12px;color:var(--txt3);font-style:italic;margin-bottom:14px">${es((g.generation_notes||[])[0]||'AI-generated drafts — legal review required.')}</div>
+    <div class="doc-tabs">${avail.map(k=>`<button class="dt ${k===avail[0]?'active':''}" id="dtab-${k}" onclick="swDoc('${k}')">${labels[k]||k}</button>`).join('')}</div>
+    <div id="doc-panel"><div class="doc-body">${es(docs[avail[0]]||'')}</div><button class="copy-btn" onclick="cpDoc()">⎘ Copy to Clipboard</button></div>
+  `;
+}
+
+window.swDoc = function(k){
+  document.querySelectorAll('.dt').forEach(t=>t.classList.remove('active'));
+  const dt=document.getElementById('dtab-'+k); if(dt) dt.classList.add('active');
+  document.getElementById('doc-panel').innerHTML=`<div class="doc-body">${es((window._docs||{})[k]||'')}</div><button class="copy-btn" onclick="cpDoc()">⎘ Copy to Clipboard</button>`;
+  window._activeDoc=k;
+};
+window.cpDoc = function(){
+  const t=(window._docs||{})[window._activeDoc||'']||''; if(!t) return;
+  navigator.clipboard.writeText(t).then(()=>{ const b=document.querySelector('.copy-btn'); if(b){ b.textContent='✓ Copied!'; setTimeout(()=>b.textContent='⎘ Copy to Clipboard',2000); } });
+};
+
+function showErr(m){ const e=document.getElementById('lerr'); e.textContent=m; e.style.display='block'; document.getElementById('login-screen').style.display='flex'; document.getElementById('dashboard').style.display='none'; sessionStorage.removeItem('crm'); }
+function fd(iso){ if(!iso) return'—'; try{ return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }catch{ return iso; } }
+function es(s){ if(!s) return''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
