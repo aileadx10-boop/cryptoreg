@@ -239,6 +239,16 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <body>
 
 <!-- ── LOGIN ────────────────────────────────────────────── -->
+  
+<h2>Token Risk Analysis</h2>
+
+<form id="analysisForm">
+  <input type="text" id="tokenName" placeholder="Token Name" required />
+  <input type="text" id="website" placeholder="Website URL" required />
+  <button type="submit">Analyze</button>
+</form>
+
+<pre id="result"></pre>
 <div id="login-screen">
   <div class="lc">
     <div class="lcard">
@@ -660,6 +670,24 @@ window.cpDoc = function(){
 function showErr(m){ const e=document.getElementById('lerr'); e.textContent=m; e.style.display='block'; document.getElementById('login-screen').style.display='flex'; document.getElementById('dashboard').style.display='none'; sessionStorage.removeItem('crm'); }
 function fd(iso){ if(!iso) return'—'; try{ return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }catch{ return iso; } }
 function es(s){ if(!s) return''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+  <script>
+document.getElementById("analysisForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const tokenName = document.getElementById("tokenName").value;
+  const website = document.getElementById("website").value;
+
+  const response = await fetch("/.netlify/functions/api", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tokenName, website })
+  });
+
+  const data = await response.json();
+  document.getElementById("result").textContent =
+    JSON.stringify(data, null, 2);
+});
 </script>
 </body>
 </html>
