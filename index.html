@@ -678,7 +678,7 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
   const tokenName = document.getElementById("tokenName").value;
   const website = document.getElementById("website").value;
 
-  const response = await fetch("/.netlify/functions/api", {
+  const response = await fetch("/.netlify/functions/08_dashboard_api", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tokenName, website })
