@@ -22,6 +22,30 @@ exports.run = async function (input) {
     }
   });
 
+  // Rule 4: Fetch website content
+  try {
+    const response = await fetch(website);
+    const html = await response.text();
+
+    const websiteRedFlags = [
+      "guaranteed returns",
+      "double your money",
+      "risk free",
+      "limited time offer",
+      "act now"
+    ];
+
+    websiteRedFlags.forEach((phrase) => {
+      if (html.toLowerCase().includes(phrase)) {
+        riskScore += 15;
+      }
+    });
+
+  } catch (error) {
+    // Website not reachable
+    riskScore += 40;
+  }
+
   if (riskScore > 100) riskScore = 100;
 
   let summary = "Low Risk";
@@ -36,6 +60,6 @@ exports.run = async function (input) {
     token: tokenName,
     website: website,
     risk_score: riskScore,
-    summary: summary,
+    summary: summary
   };
 };
