@@ -1,15 +1,15 @@
+const orchestrator = require("./01_orchestrator");
+
 exports.handler = async function (event) {
 
   try {
     const data = JSON.parse(event.body);
 
+    const result = await orchestrator.run(data);
+
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        receivedToken: data.tokenName,
-        receivedWebsite: data.website,
-        status: "Input received successfully"
-      })
+      body: JSON.stringify(result)
     };
 
   } catch (error) {
